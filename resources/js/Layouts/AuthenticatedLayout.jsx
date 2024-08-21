@@ -5,19 +5,23 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
+    const { user, role, permission } = auth;
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-blue-600 border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="bg-white border-b border-gray-100">
+                <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-white font-bold" />
+                                    <ApplicationLogo className="block h-10 w-auto fill-slate-600 text-slate-500 font-extrabold" />
+
+                                    {/* <span className="text-blue-500 font-extrabold">
+                                        app
+                                    </span> */}
                                 </Link>
                             </div>
 
@@ -29,55 +33,94 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink
-                                    href={route("user.index")}
-                                    active={route().current("user.index")}
-                                >
-                                    User
-                                </NavLink>
-                                <div className="hidden sm:flex sm:items-center sm:ms-6">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <span className=" rounded-md">
-                                                <button
-                                                    type="button"
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                                >
-                                                    Setting
-                                                    <svg
-                                                        className="ms-2 -me-0.5 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
+                                {role[0] == "super" || role[0] == "admin" ? (
+                                    <NavLink
+                                        href={route("user.index")}
+                                        active={route().current("user.index")}
+                                    >
+                                        User
+                                    </NavLink>
+                                ) : (
+                                    ""
+                                )}
+
+                                {role[0] == "super" || role[0] == "admin" ? (
+                                    <div className="hidden sm:flex sm:items-center sm:ms-6">
+                                        <Dropdown>
+                                            <Dropdown.Trigger>
+                                                <span className=" rounded-md">
+                                                    <button
+                                                        type="button"
+                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-800 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                                     >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                            clipRule="evenodd"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            <Dropdown.Link
-                                                href={route("role.index")}
-                                            >
-                                                Role
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("permission.index")}
-                                            >
-                                                Permission
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("role-perms.index")}
-                                            >
-                                                Role Have Permission
-                                            </Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
+                                                        Master Data
+                                                        <svg
+                                                            className="ms-2 -me-0.5 h-4 w-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                clipRule="evenodd"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </Dropdown.Trigger>
+                                            <Dropdown.Content></Dropdown.Content>
+                                        </Dropdown>
+
+                                        <Dropdown>
+                                            <Dropdown.Trigger>
+                                                <span className=" rounded-md">
+                                                    <button
+                                                        type="button"
+                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-800 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                    >
+                                                        Setting
+                                                        <svg
+                                                            className="ms-2 -me-0.5 h-4 w-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                clipRule="evenodd"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </Dropdown.Trigger>
+                                            <Dropdown.Content>
+                                                <Dropdown.Link
+                                                    href={route("role.index")}
+                                                >
+                                                    Role
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route(
+                                                        "permission.index"
+                                                    )}
+                                                >
+                                                    Permission
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route(
+                                                        "role-perms.index"
+                                                    )}
+                                                >
+                                                    Role Have Permission
+                                                </Dropdown.Link>
+                                            </Dropdown.Content>
+                                        </Dropdown>
+                                    </div>
+                                ) : (
+                                    ""
+                                )}
                             </div>
                         </div>
 
@@ -190,27 +233,50 @@ export default function Authenticated({ user, header, children }) {
                             User
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink
-                            href={route("role.index")}
-                            active={route().current("role.index")}
-                        >
-                            Role
-                        </ResponsiveNavLink>
+                        <div className="pt-4 pb-1 border-t border-slate-200">
+                            <div className="px-4 mb-2">
+                                <div className="font-bold text-base text-gray-800">
+                                    Master Data
+                                </div>
+                            </div>
+                        </div>
 
-                        <ResponsiveNavLink
-                            href={route("role-perms.index")}
-                            active={route().current("role.index")}
-                        >
-                            Role Have Permission
-                        </ResponsiveNavLink>
+                        <div className="pt-4 pb-1 border-t border-slate-200">
+                            <div className="px-4 mb-2">
+                                <div className="font-bold text-base text-gray-800">
+                                    Setting
+                                </div>
+                            </div>
+
+                            <ResponsiveNavLink
+                                href={route("role.index")}
+                                active={route().current("role.index")}
+                            >
+                                Role
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink
+                                href={route("permission.index")}
+                                active={route().current("permission.index")}
+                            >
+                                Permission
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink
+                                href={route("role-perms.index")}
+                                active={route().current("role.index")}
+                            >
+                                Role Have Permission
+                            </ResponsiveNavLink>
+                        </div>
                     </div>
 
-                    <div className="pt-4 pb-1 border-t border-gray-200">
+                    <div className="pt-4 pb-1 border-t border-slate-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-white">
+                            <div className="font-medium text-base text-gray-800">
                                 {user.name}
                             </div>
-                            <div className="font-medium text-sm text-white">
+                            <div className="font-medium text-sm text-gray-800">
                                 {user.email}
                             </div>
                         </div>
@@ -233,7 +299,7 @@ export default function Authenticated({ user, header, children }) {
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-screen-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
@@ -241,9 +307,12 @@ export default function Authenticated({ user, header, children }) {
 
             <main>{children}</main>
 
-            <div className="max-w-7xl mx-auto px-0 md:px-6 lg:px-8 space-y-6">
+            <div className="max-w-screen-2xl mx-auto px-0 md:px-6 lg:px-8 space-y-6">
                 <div className="bg-white overflow-hidden shadow-sm lg:rounded md:rounded py-4 px-4">
-                    <div className="text-gray-400">2024 Free Sorfware</div>
+                    <div className="text-gray-400">
+                        &copy; 2024 Yasunaga Indonesia
+                        <br />
+                    </div>
                 </div>
             </div>
         </div>

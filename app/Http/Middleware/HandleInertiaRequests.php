@@ -29,10 +29,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $permissions = collect();
+        if (isset($request->user()->roles)) {
+            $request->user()->roles()->each(function ($role, $key) use($permissions) {
+                $permissions->push($role->permissions->pluck('name'));
+            });
+        }
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'role' => isset($request->user()->roles) ? $request->user()->roles->pluck('name') : "",
+                'permission' => $permissions
             ],
         ];
     }
