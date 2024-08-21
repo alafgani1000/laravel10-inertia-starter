@@ -218,7 +218,7 @@ export default function Index({
                                                         {role.name}
                                                     </td>
                                                     <td className="text-left py-3 px-4">
-                                                        <div className="flex flex-wrap space-x-1 space-y-1">
+                                                        <div className="flex flex-wrap space-x-1">
                                                             {role.permissions.map(
                                                                 (
                                                                     value,
@@ -229,7 +229,7 @@ export default function Index({
                                                                             key={
                                                                                 index
                                                                             }
-                                                                            className="bg-rose-500 text-white px-2 py-1 rounded-full text-xs font-bold"
+                                                                            className="bg-rose-500 text-white px-2 py-1 my-1 rounded-full text-xs font-bold"
                                                                         >
                                                                             {
                                                                                 value.name
